@@ -1,22 +1,30 @@
-body {
+* {
+    background-color: #b5bdc6;
+
+}
+
+
+#container-button {s
+display: flex;
+justify-content: center;
+align-items: center;
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+margin: 0 auto;
+margin-top: 10px;
+
+}
+
+/* body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+ */
 
 
-
-
-#container-button-logo{
-    display: block;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin: 0 auto;
-
-
-}
 
 
 
@@ -25,4 +33,5 @@ canvas {
     border: 1px solid #000;
     display: block;
     margin: 0 auto;
+    margin-top: 15px;
 }

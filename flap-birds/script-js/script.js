@@ -1,4 +1,20 @@
-console.log(document);
+console.log(document)
+
+let frames = 0;
+const som_HIT = new Audio();
+som_HIT.src = '../efects/efeitos_hit.wav';
+
+
+const som_Pontos = new Audio();
+som_Pontos.src = '../efects/efeitos_ponto.wav';
+
+
+const som_Caiu = new Audio();
+som_Caiu.src = '../efects/efeitos_caiu.wav';
+
+// const som_Pulo = new Audio();
+// som_Caiu.src = '../efects/efeitos_pulo.wav';
+
 
 const sprites = new Image();
 sprites.src = '../image/sprites.png';
@@ -15,7 +31,6 @@ const planoDeFundo = {
   altura: 204,
   x: 0,
   y: canvas.height - 204,
-  
   desenha() {
     contexto.fillStyle = '#70c5ce';
     contexto.fillRect(0,0, canvas.width, canvas.height)
@@ -38,7 +53,7 @@ const planoDeFundo = {
   },
 };
 
-
+// [Chao]
 function criaChao() {
   const chao = {
     spriteX: 0,
@@ -52,7 +67,7 @@ function criaChao() {
       const repeteEm = chao.largura / 2;
       const movimentacao = chao.x - movimentoDoChao;
 
-           
+          
       chao.x = movimentacao % repeteEm;
     },
     desenha() {
@@ -105,7 +120,9 @@ function criaFlappyBird() {
     velocidade: 0,
     atualiza() {
       if(fazColisao(flappyBird, globais.chao)) {
-       
+                // som_HIT.play();
+                som_Caiu.play();
+
         mudaParaTela(Telas.GAME_OVER);
         return;
       }
@@ -123,7 +140,7 @@ function criaFlappyBird() {
     atualizaOFrameAtual() {     
       const intervaloDeFrames = 10;
       const passouOIntervalo = frames % intervaloDeFrames === 0;
-    
+  
 
       if(passouOIntervalo) {
         const baseDoIncremento = 1;
@@ -131,7 +148,7 @@ function criaFlappyBird() {
         const baseRepeticao = flappyBird.movimentos.length;
         flappyBird.frameAtual = incremento % baseRepeticao
       }
-     
+       
     },
     desenha() {
       flappyBird.atualizaOFrameAtual();
@@ -139,7 +156,7 @@ function criaFlappyBird() {
 
       contexto.drawImage(
         sprites,
-        spriteX, spriteY, 
+        spriteX, spriteY, // Sprite X, Sprite Y
         flappyBird.largura, flappyBird.altura, // Tamanho do recorte na sprite
         flappyBird.x, flappyBird.y,
         flappyBird.largura, flappyBird.altura,
@@ -150,6 +167,7 @@ function criaFlappyBird() {
 }
 
 
+/// [mensagemGetReady]
 const mensagemGetReady = {
   sX: 134,
   sY: 0,
@@ -168,7 +186,7 @@ const mensagemGetReady = {
   }
 }
 
-
+// [mensagemGameOver]
 const mensagemGameOver = {
   sX: 134,
   sY: 153,
@@ -187,7 +205,9 @@ const mensagemGameOver = {
   }
 }
 
-
+// 
+// [Canos]
+// 
 
 function criaCanos() {
   const canos = {
@@ -246,6 +266,7 @@ function criaCanos() {
       
       if((globais.flappyBird.x + globais.flappyBird.largura) >= par.x) {
         if(cabecaDoFlappy <= par.canoCeu.y) {
+          som_HIT.play();
           return true;
         }
 
@@ -259,7 +280,7 @@ function criaCanos() {
     atualiza() {
       const passou100Frames = frames % 100 === 0;
       if(passou100Frames) {
-        
+        console.log('Passou 100 frames');
         canos.pares.push({
           x: canvas.width,
           y: -150 * (Math.random() + 1),
@@ -272,7 +293,8 @@ function criaCanos() {
         par.x = par.x - 2;
 
         if(canos.temColisaoComOFlappyBird(par)) {
-                   
+          console.log('Você perdeu!')
+          som_HIT.play();
           mudaParaTela(Telas.GAME_OVER);
         }
 
@@ -293,8 +315,8 @@ function criaPlacar() {
     desenha() {
       contexto.font = '35px "VT323"';
       contexto.textAlign = 'right';
-      contexto.fillStyle = 'black';
-      contexto.fillText(`${placar.pontuacao}`, canvas.width - 30, 50);      
+      contexto.fillStyle = 'white';
+      contexto.fillText(`${placar.pontuacao}`, canvas.width - 50, 70);      
     },
     atualiza() {
       const intervaloDeFrames = 20;
@@ -302,6 +324,8 @@ function criaPlacar() {
 
       if(passouOIntervalo) {
         placar.pontuacao = placar.pontuacao + 1;
+        som_Pontos.play();
+        
       }
     }
   }
@@ -383,7 +407,6 @@ function loop() {
 
   telaAtiva.desenha();
   telaAtiva.atualiza();
-  criaCanos()
 
   frames = frames + 1;
   requestAnimationFrame(loop);
@@ -393,10 +416,9 @@ function loop() {
 canvas.addEventListener('click', function() {
   if(telaAtiva.click) {
     telaAtiva.click();
+    // som_Pulo.play();
   }
 });
 
-
 mudaParaTela(Telas.INICIO);
 loop();
-criaPlacar()
