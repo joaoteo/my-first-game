@@ -1,0 +1,24 @@
+
+
+#container-button-logo{
+    display: block;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0 auto;
+
+
+}
+
+
+
+
+canvas {
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position:top;
+    display: flex;
+    margin: 0 auto;
+    border: 1px solid black;
+    margin-top: 10px;
+}
